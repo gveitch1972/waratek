@@ -1,0 +1,123 @@
+Build a program that takes a file as input and displays it in a 7 segment display akin to a calc display
+
+- Need something to read and verify input file. 
+    - check file syntax <widthInt SPACE displayInt> - Implicit
+    - check widthInt which can be between 1 and 10 inclusive. ( warn/error if outwith bounds ) - DONE
+    - check displayInt which can be up to, and including 25 digits long ( warn/error if outwith bounds ) - DONE
+    - Doesn't say anything about allowing comments in the input file but these are usually helpful, design/code to accept #comments - DONT OOS
+    - Could also check if file is locked by OS but perhaps OO scope. However check integrity of file. - DONT OOS
+    
+- Need some formatting to display the 7 digit display. Question is if the display is only 7 digits and the length of the integer string is >= 25 digits, what do we do. We could either truncate or scroll, that latter being simpler to implement. OK my bad, the 7 segment is the digital char not the width of the display, misunderstood!!
+    - Width formatting looking at the PDF, haven't opened the sample.zip yet is if width is 1 width of display digit/char is 3, or at least in the example 8192 the 8's ( and 9 and 2's ) horizontal 'strokes' are one wide. Height not affected, although it'll look weirder the wider the digits get.
+    - The trickiest bit, I think, is going to be getting the formatting correct. Could use format or special chars and I think we need to deal with one row of the output at a time and perhaps populate an array with this row using maybe a vector for each display digit.
+
+- Need some tests to check that the output is the same as the examples in the sample.zip file, let's take a look at that file now. 
+    - OK so having a look at the scale, it scales both horizontally and vertically so assumption above is incorrect it won't look odd, clearer in the txt file than in the PDF but I missed it. Also one of the examples look to be incorrect i.e. the 2 scale of 1111, I think this is scaled to 3. 
+
+
+Braindump:
+- Hashes might be better to store the vector(s) and I can call the 1,2,3 etc..., could also do this with arrays tho, as what I need is x number of array's horizontally that cover the depth of the digit. 
+- Storing the whitespace might break the scaling so careful with this. 
+- Needed to download a picture of a calc to see what digital chars look like ( been a while, jpg in doc folder )
+- Each digit is three chars wide and from samples.zip 5 chars high for scaling of 1. 
+- Ensure all requirements have been identified and covered. 
+- So we have the solution for scale 0, now we need to address scaling:
+    - For the vertical lines we just need to repeat the pattern we have in each corner, as there could be spaces or -'s. 
+    - For the horizontal lines we need to stretch the pattern by the scale.
+
+Testing:
+    Scaling Factor outwith bounds
+    Input string outwith bounds
+    Existence of input file.
+    Input string contains valid ints
+    Scaling factor is a valid int
+    Too much data in input file, i.e. extra fields. The code will only read in, the first two nonwhitespace strings seperated by a space so Out Of Scope.
+    All examples in samples.zip have been produced and diff'd to check that they match. Only caveat is the 1111 scaled to two which I think is incorrect. 
+
+System:
+Bungle:waratekSolution gveitch$ uname -a
+Darwin Bungle.home 16.3.0 Darwin Kernel Version 16.3.0: Thu Nov 17 20:23:58 PST 2016; root:xnu-3789.31.2~1/RELEASE_X86_64 x86_64
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+Output examples, i.e. what scale 1 should look like. :
+
+ -       -   -  
+| |   | | |   | 
+ -       -   -  
+| |   |   | |   
+ -       -   -  
+
+------------------
+1
+    
+  | 
+    
+  | 
+
+------------------
+2
+ -  
+  | 
+ -  
+|   
+ -  
+------------------
+3
+ -
+  |
+ -
+  |
+ -
+------------------
+4
+
+| |
+ -
+  |
+
+------------------
+5
+ - 
+|  
+ -
+  |
+ -
+------------------
+6
+ -
+| 
+ - 
+| |
+ -
+------------------
+7
+ -
+| |
+ 
+  |
+
+------------------
+8
+ -  
+| | 
+ -  
+| | 
+ -  
+------------------
+9
+ - 
+| | 
+ - 
+  | 
+ - 
+------------------
+0
+ -
+| |
+ 
+| |
+ -
+------------------
