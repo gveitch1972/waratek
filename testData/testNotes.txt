@@ -1,0 +1,18 @@
+./lcd.pl -i 1 -s 8192 > output/scale_1_8192.txt 
+./lcd.pl -i 2 -s 8192 > output/scale_2_8192.txt 
+./lcd.pl -i 1 -s 1111 > output/scale_1_1111.txt 
+./lcd.pl -i 2 -s 1111 > output/scale_2_1111.txt 
+./lcd.pl -i 2 -s 1111 > output/scale_3_1111.txt 
+./lcd.pl -i 1 -s 8888 > output/scale_1_8888.txt 
+./lcd.pl -i 2 -s 8888 > output/scale_2_8888.txt 
+./lcd.pl -i 3 -s 8888 > output/scale_3_8888.txt 
+./lcd.pl -i 10 -s 8888 > output/scale_10_8888.txt 
+
+diff examplesFromWaratek/scale_1_8192.txt output/scale_1_8192.txt
+diff examplesFromWaratek/scale_2_8192.txt output/scale_2_8192.txt
+diff examplesFromWaratek/scale_1_1111.txt output/scale_2_8192.txt
+diff examplesFromWaratek/scale_1_1111.txt output/scale_1_1111.txt
+diff examplesFromWaratek/scale_2_1111.txt output/scale_2_1111.txt
+more examplesFromWaratek/scale_2_1111.txt output/scale_2_1111.txt
+view examplesFromWaratek/scale_2_1111.txt output/scale_2_1111.txt
+
